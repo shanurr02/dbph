@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Prediction</title>
+</head>
+<body>
+
+<h1>Text Prediction</h1>
+
+<form id="upload-form" enctype="multipart/form-data">
+    <label for="csvFile">Upload CSV File:</label>
+    <input type="file" name="csvFile" accept=".csv" required>
+    <button type="button" onclick="uploadFile()">Submit</button>
+</form>
+
+<div id="predictions"></div>
+
+<script>
+    function uploadFile() {
+        var form = document.getElementById('upload-form');
+        var formData = new FormData(form);
+
+        fetch('http://127.0.0.1:5000/predict_csv', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayPredictions(data.predictions);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function displayPredictions(predictions) {
+        var predictionsDiv = document.getElementById('predictions');
+        predictionsDiv.innerHTML = '<h2>Predictions:</h2>';
+
+        if (predictions.length > 0) {
+            predictionsDiv.innerHTML += '<ul>';
+            predictions.forEach(result => {
+                predictionsDiv.innerHTML += '<li>' + result + '</li>';
+            });
+            predictionsDiv.innerHTML += '</ul>';
+        } else {
+            predictionsDiv.innerHTML += '<p>No predictions available.</p>';
+        }
+    }
+</script>
+
+</body>
+</html>
