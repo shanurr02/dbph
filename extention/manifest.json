@@ -1,0 +1,41 @@
+{
+    "name": "Dark Pattern Detection",
+    "version": "0.1.0",
+    "description": "Detecting dark patterns",
+    "permissions": ["storage", "tabs","activeTab","webNavigation"],
+    "host_permissions": ["https://*.flipkart.com/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self';"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*.flipkart.com/*"],
+        "js": ["scripts/content.js"],
+        "run_at": "document_end" 
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "assets/bookmark.png",
+          "assets/play.png",
+          "assets/delete.png",  
+          "assets/save.png"
+        ],
+        "matches": ["https://*.flipkart.com/*"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/ext-icon.png",
+        "24": "assets/ext-icon.png",
+        "32": "assets/ext-icon.png"
+      },
+      "default_title": "My Detection",
+      "default_popup": "popup/popup.html"
+    },
+    "manifest_version": 3
+}
